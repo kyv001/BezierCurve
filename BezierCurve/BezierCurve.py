@@ -16,10 +16,10 @@ def lerp_color(a, b, x):
 
 running = True
 clock = pygame.time.Clock()
-p1 = [100, 200]
-p2 = [200, 250]
-p3 = [150, 150]
-p4 = [250, 400]
+p1 = [600, 200]
+p2 = [600, 300]
+p3 = [200, 300]
+p4 = [200, 200]
 c1 = [250, 250, 250]
 c2 = [250, 100, 100]
 c3 = [100, 100, 250]
@@ -33,12 +33,14 @@ while running:
             running = False
         if event.type == KEYDOWN:
             if event.key == K_UP:
-                x_speed = 1
+                x_speed += 1
             if event.key == K_DOWN:
-                x_speed = -1
+                x_speed -= 1
         if event.type == KEYUP:
-            if event.key == K_UP or event.key == K_DOWN:
-                x_speed = 0
+            if event.key == K_UP:
+                x_speed -= 1
+            if event.key == K_DOWN:
+                x_speed += 1
         if event.type == MOUSEMOTION:
             if controlling == 1:
                 p1 = event.pos
@@ -60,7 +62,11 @@ while running:
         if event.type == MOUSEBUTTONUP:
             controlling = 0
 
-    x_now = max(0, min(1, x_now + 0.01 * x_speed))
+    x_now += 0.01 * x_speed
+    if x_now > 1:
+        x_now -= 1
+    if x_now < 0:
+        x_now += 1
     screen.fill((35, 30, 40))
 
     for x_line in range(1001):
@@ -85,10 +91,10 @@ while running:
                 x_line / 1000
             ), lerp_color(c1, c4, x_line / 1000))
 
-    pygame.draw.circle(screen, (230, 230, 230), p1, 12)
-    pygame.draw.circle(screen, (230, 230, 230), p2, 12)
-    pygame.draw.circle(screen, (230, 230, 230), p3, 12)
-    pygame.draw.circle(screen, (230, 230, 230), p4, 12)
+    pygame.draw.circle(screen, (200, 200, 200), p1, 12)
+    pygame.draw.circle(screen, (200, 200, 200), p2, 12)
+    pygame.draw.circle(screen, (200, 200, 200), p3, 12)
+    pygame.draw.circle(screen, (200, 200, 200), p4, 12)
 
     pygame.draw.circle(screen, c1, p1, 10)
     pygame.draw.circle(screen, c2, p2, 10)
@@ -112,6 +118,6 @@ while running:
     pygame.draw.circle(screen, lerp_color(c1, c4, x_now), pb, 10)
 
     pygame.display.update()
-    clock.tick(60)
+    clock.tick(120)
 
 pygame.quit()
